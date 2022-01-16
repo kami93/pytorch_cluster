@@ -15,20 +15,23 @@ PyMODINIT_FUNC PyInit__knn_cpu(void) { return NULL; }
 #endif
 #endif
 
-torch::Tensor knn(torch::Tensor x, torch::Tensor y,
-                  torch::optional<torch::Tensor> ptr_x,
-                  torch::optional<torch::Tensor> ptr_y, int64_t k, bool cosine,
-                  int64_t num_workers) {
+std::tuple<torch::Tensor, torch::Tensor>
+knn(torch::Tensor x, torch::Tensor y,
+    torch::optional<torch::Tensor> ptr_x,
+    torch::optional<torch::Tensor> ptr_y, int64_t k, bool cosine,
+    int64_t num_workers,
+    bool replacement) {
   if (x.device().is_cuda()) {
 #ifdef WITH_CUDA
-    return knn_cuda(x, y, ptr_x, ptr_y, k, cosine);
+    return knn_cuda(x, y, ptr_x, ptr_y, k, cosine, replacement);
 #else
     AT_ERROR("Not compiled with CUDA support");
 #endif
   } else {
-    if (cosine)
-      AT_ERROR("`cosine` argument not supported on CPU");
-    return knn_cpu(x, y, ptr_x, ptr_y, k, num_workers);
+    AT_ERROR("this custom knn not supported on CPU");
+    // if (cosine)
+    //   AT_ERROR("`cosine` argument not supported on CPU");
+    // return knn_cpu(x, y, ptr_x, ptr_y, k, num_workers);
   }
 }
 

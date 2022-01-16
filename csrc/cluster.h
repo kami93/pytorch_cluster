@@ -15,7 +15,7 @@ torch::Tensor grid(torch::Tensor pos, torch::Tensor size,
                    torch::optional<torch::Tensor> optional_end);
 
 torch::Tensor knn(torch::Tensor x, torch::Tensor y, torch::Tensor ptr_x,
-                  torch::Tensor ptr_y, int64_t k, bool cosine);
+                  torch::Tensor ptr_y, int64_t k, bool cosine, bool replacement);
 
 torch::Tensor nearest(torch::Tensor x, torch::Tensor y, torch::Tensor ptr_x,
                       torch::Tensor ptr_y);
