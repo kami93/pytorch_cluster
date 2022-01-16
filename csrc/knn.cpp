@@ -19,11 +19,10 @@ std::tuple<torch::Tensor, torch::Tensor>
 knn(torch::Tensor x, torch::Tensor y,
     torch::optional<torch::Tensor> ptr_x,
     torch::optional<torch::Tensor> ptr_y, int64_t k, bool cosine,
-    int64_t num_workers,
-    bool replacement) {
+    int64_t num_workers) {
   if (x.device().is_cuda()) {
 #ifdef WITH_CUDA
-    return knn_cuda(x, y, ptr_x, ptr_y, k, cosine, replacement);
+    return knn_cuda(x, y, ptr_x, ptr_y, k, cosine);
 #else
     AT_ERROR("Not compiled with CUDA support");
 #endif

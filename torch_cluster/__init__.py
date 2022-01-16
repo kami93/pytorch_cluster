@@ -20,6 +20,18 @@ for library in [
         raise ImportError(f"Could not find module '{library}_cpu' in "
                           f"{osp.dirname(__file__)}")
 
+# cuda only
+for library in [
+        '_knn_without_replacement'
+]:
+    cuda_spec = importlib.machinery.PathFinder().find_spec(
+        f'{library}_cuda', [osp.dirname(__file__)])
+    if cuda_spec is not None:
+        torch.ops.load_library(cuda_spec.origin)
+    else:  # pragma: no cover
+        raise ImportError(f"Could not find module '{library}_cuda' in "
+                          f"{osp.dirname(__file__)}")
+
 cuda_version = torch.ops.torch_cluster.cuda_version()
 if torch.cuda.is_available() and cuda_version != -1:  # pragma: no cover
     if cuda_version < 10000:
@@ -41,6 +53,7 @@ from .grid import grid_cluster  # noqa
 from .fps import fps  # noqa
 from .nearest import nearest  # noqa
 from .knn import knn, knn_graph  # noqa
+from .knn_without_replacement import knn_without_replacement  # noqa
 from .radius import radius, radius_graph  # noqa
 from .rw import random_walk  # noqa
 from .sampler import neighbor_sampler  # noqa
@@ -52,6 +65,7 @@ __all__ = [
     'nearest',
     'knn',
     'knn_graph',
+    'knn_without_replacement',
     'radius',
     'radius_graph',
     'random_walk',

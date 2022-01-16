@@ -14,8 +14,13 @@ torch::Tensor grid(torch::Tensor pos, torch::Tensor size,
                    torch::optional<torch::Tensor> optional_start,
                    torch::optional<torch::Tensor> optional_end);
 
-torch::Tensor knn(torch::Tensor x, torch::Tensor y, torch::Tensor ptr_x,
-                  torch::Tensor ptr_y, int64_t k, bool cosine, bool replacement);
+std::tuple<torch::Tensor, torch::Tensor>
+knn(torch::Tensor x, torch::Tensor y, torch::Tensor ptr_x,
+                  torch::Tensor ptr_y, int64_t k, bool cosine);
+
+std::tuple<torch::Tensor, torch::Tensor>
+knn_without_replacement(torch::Tensor sorted_distances, torch::Tensor sorted_indices
+                        int64_t batch_size, int64_t x_size, int64_t y_size, int64_t k);
 
 torch::Tensor nearest(torch::Tensor x, torch::Tensor y, torch::Tensor ptr_x,
                       torch::Tensor ptr_y);

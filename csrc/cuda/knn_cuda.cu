@@ -5,7 +5,7 @@
 #include "utils.cuh"
 
 #define THREADS 256
-#define PTS_BUFFER 1024
+#define PTS_BUFFER 2048
 
 template <typename scalar_t> struct Cosine {
   static inline __device__ scalar_t dot(const scalar_t *a, const scalar_t *b,
@@ -120,8 +120,7 @@ std::tuple<torch::Tensor, torch::Tensor>
 knn_cuda(const torch::Tensor x, const torch::Tensor y,
         torch::optional<torch::Tensor> ptr_x,
         torch::optional<torch::Tensor> ptr_y, const int64_t k,
-        const bool cosine,
-        const bool replacement) {
+        const bool cosine) {
 
   CHECK_CUDA(x);
   CHECK_CONTIGUOUS(x);
@@ -130,7 +129,7 @@ knn_cuda(const torch::Tensor x, const torch::Tensor y,
   CHECK_CONTIGUOUS(y);
   CHECK_INPUT(y.dim() == 2);
   CHECK_INPUT(x.size(1) == y.size(1));
-  AT_ASSERTM(k <= 100, "`k` needs to smaller than or equal to 100");
+  AT_ASSERTM(k <= 200, "`k` needs to smaller than or equal to 200");
 
   if (ptr_x.has_value()) {
     CHECK_CUDA(ptr_x.value());

@@ -7,8 +7,7 @@ import torch
 def knn(x: torch.Tensor, y: torch.Tensor, k: int,
         batch_x: Optional[torch.Tensor] = None,
         batch_y: Optional[torch.Tensor] = None, cosine: bool = False,
-        num_workers: int = 1,
-        replacement: bool = False) -> Tuple[torch.Tensor,torch.Tensor]:
+        num_workers: int = 1) -> Tuple[torch.Tensor,torch.Tensor]:
     r"""Finds for each element in :obj:`y` the :obj:`k` nearest points in
     :obj:`x`.
 
@@ -68,11 +67,7 @@ def knn(x: torch.Tensor, y: torch.Tensor, k: int,
         ptr_x = torch.bucketize(arange, batch_x)
         ptr_y = torch.bucketize(arange, batch_y)
 
-    output = torch.ops.torch_cluster.knn(x, y, ptr_x, ptr_y, k, cosine, num_workers, replacement)
-    # if without_replacement:
-    #     output = torch.ops.torch_cluster.knn_without_replacement(x, y, ptr_x, ptr_y, k, cosine, num_workers)
-    # else:
-    #     output = torch.ops.torch_cluster.knn(x, y, ptr_x, ptr_y, k, cosine, num_workers)
+    output = torch.ops.torch_cluster.knn(x, y, ptr_x, ptr_y, k, cosine, num_workers)
 
     return output
 
