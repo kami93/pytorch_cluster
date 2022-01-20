@@ -271,10 +271,10 @@ tensor([[0, 1, 2, 4],
         [4, 3, 1, 0]])
 ```
 
-## Running tests
+## How to compile?
 
 ```
-python setup.py test
+python setup.py build develop
 ```
 
 ## C++ API
